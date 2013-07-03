@@ -59,6 +59,7 @@ def getIdPRequest(keystoneEndpoint, realm):
     data = {'realm': realm}
     resp = futils.middlewareRequest(keystoneEndpoint, data, 'POST')
     info = json.loads(resp.read())
+    print(info)
     return info
 
 # This variable is necessary to get the IdP response
@@ -107,13 +108,14 @@ def getIdPResponse(idpEndpoint, idpRequest):
             varLen = int(self.headers["Content-Length"])
             #response = urlparse.parse_qs(self.rfile.read(varLen))
             response = self.rfile.read(varLen)
+	    #print(response)
             if response is None:
                 self.wfile.write("An error occured.")
                 raise federated_exceptions.CommunicationsError()
             self.wfile.write("You have successfully logged in. "
                              "You can close this window now.")
     httpd = BaseHTTPServer.HTTPServer(('localhost', 8080), RequestHandler)
-    print("Ioram")
+
     try:
     	httpd.socket = ssl.wrap_socket(httpd.socket, keyfile=key, certfile=cert, server_side=True)
 	httpd.socket.settimeout(1)
@@ -126,8 +128,6 @@ def getIdPResponse(idpEndpoint, idpRequest):
 	    count = count + 1
         except Exception as e:
 	    print e.value
-    print(response)
-    print("/Ioram")
     if response is None:
 	print ("There was no response from the Identity Provider or the request timed out")
         exit("An error occurred, please try again")
@@ -141,8 +141,20 @@ def getUnscopedToken(keystoneEndpoint, idpResponse, realm = None):
 	data = {'idpResponse' : idpResponse}
     else:
     	data = {'idpResponse' : idpResponse, 'realm' : realm}
+
+    print(keystoneEndpoint)
+    print(data)
+    x = raw_input("ENTER")
+
     resp = futils.middlewareRequest(keystoneEndpoint, data, 'POST')
+
+    print(resp)
+    x = raw_input("ENTER")
+
     info = json.loads(resp.read())
+
+    print(info)
+
     return info
 
 ## Get a tenant-scoped token for the user
