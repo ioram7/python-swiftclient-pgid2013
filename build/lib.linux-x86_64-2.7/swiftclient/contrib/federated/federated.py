@@ -59,7 +59,7 @@ def getIdPRequest(keystoneEndpoint, realm):
     data = {'realm': realm}
     resp = futils.middlewareRequest(keystoneEndpoint, data, 'POST')
     info = json.loads(resp.read())
-    print(info)
+    #print(info)
     return info
 
 # This variable is necessary to get the IdP response
@@ -142,18 +142,18 @@ def getUnscopedToken(keystoneEndpoint, idpResponse, realm = None):
     else:
     	data = {'idpResponse' : idpResponse, 'realm' : realm}
 
-    print(keystoneEndpoint)
-    print(data)
-    x = raw_input("ENTER")
+    #print(keystoneEndpoint)
+    #print(data)
+    #x = raw_input("ENTER")
 
     resp = futils.middlewareRequest(keystoneEndpoint, data, 'POST')
 
-    print(resp)
-    x = raw_input("ENTER")
+    #print(resp)
+    #x = raw_input("ENTER")
 
     info = json.loads(resp.read())
 
-    print(info)
+    #print(info)
 
     return info
 

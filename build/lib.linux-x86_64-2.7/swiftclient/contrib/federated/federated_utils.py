@@ -21,10 +21,10 @@ def middlewareRequest(keystoneEndpoint, data = {}, method = "GET", withheader = 
     elif method == "POST":
         data = json.dumps(data)
         headers['Content-Type'] = 'application/json'
-	print(keystoneEndpoint)
-	print(data)
-	print(headers)
-	raw_input("waiting")
+	#print(keystoneEndpoint)
+	#print(data)
+	#print(headers)
+	#raw_input("waiting")
         req = urllib2.Request(keystoneEndpoint, data, headers)
         response = urllib2.urlopen(req)
     return response

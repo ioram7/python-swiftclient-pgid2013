@@ -81,7 +81,7 @@ def getIdPResponse(idpEndpoint, idpRequest, realm=None):
 		    elif r[0] == "state" :
 			resp_state = r[1]
       	        responseIdp = dict(code=resp_code, state=resp_state)
-	        print(responseIdp)
+	        #print(responseIdp)
 
             if responseIdp is None:
                 self.wfile.write("An error occured.")

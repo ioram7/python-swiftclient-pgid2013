@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: python-swiftclient
-Version: 0.0.1.58d30d1
+Version: 0.0.2.80130fd
 Summary: Client Library for OpenStack Object Storage API
 Home-page: https://github.com/openstack/python-swiftclient
 Author: OpenStack, LLC.
