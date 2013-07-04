@@ -49,7 +49,8 @@ def selectTenantOrDomain(tenantsList, serverName=None):
 #	                print "\t{", idx, "} ", "T: "+ tenant["project"]["name"]+"@"+tenant["project"]["domain"]["name"]+", R: "+tenant["project"]["role"]["name"]
 	                print "\t{", idx, "} ", "T: "+ tenant["project"]["name"]+", R: "+tenant["project"]["role"]["name"]
 		else :
-	                print "\t{", idx, "} ", tenant["project"]["name"]+" @ "+tenant["project"]["domain"]["name"]
+#	                print "\t{", idx, "} ", tenant["project"]["name"]+" @ "+tenant["project"]["domain"]["name"]
+	                print "\t{", idx, "} ", tenant["project"]["name"]
 		
     chosen = False
     choice = None
