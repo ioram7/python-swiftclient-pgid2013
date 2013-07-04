@@ -22,8 +22,11 @@ def federatedAuthentication(keystoneEndpoint, realm = None, tenantFn = None, v3 
     protocol = realm['type'].split('.')[1]
     processing_module = load_protocol_module(protocol)
     response = processing_module.getIdPResponse(request['idpEndpoint'], request['idpRequest'], realm)
+#    print response
     tenantData = getUnscopedToken(keystoneEndpoint, response, realm)
+#    print tenantData
     tenant = futils.getTenantId(tenantData['tenants'], tenantFn)
+#   print tenant
     if tenant is None:
         tenant = futils.selectTenantOrDomain(tenantData['tenants'])
         if tenant.get("project", None) is None and tenant.get("domain", None) is None:
@@ -142,18 +145,16 @@ def getUnscopedToken(keystoneEndpoint, idpResponse, realm = None):
     else:
     	data = {'idpResponse' : idpResponse, 'realm' : realm}
 
-    #print(keystoneEndpoint)
-    #print(data)
-    #x = raw_input("ENTER")
+#    print(keystoneEndpoint)
+#    print(data)
+#    x = raw_input("ENTER")
 
     resp = futils.middlewareRequest(keystoneEndpoint, data, 'POST')
 
-    #print(resp)
-    #x = raw_input("ENTER")
-
     info = json.loads(resp.read())
 
-    #print(info)
+#    print(info)
+#    x = raw_input("ENTER")
 
     return info
 

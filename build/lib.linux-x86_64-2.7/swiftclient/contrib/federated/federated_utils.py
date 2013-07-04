@@ -32,17 +32,25 @@ def middlewareRequest(keystoneEndpoint, data = {}, method = "GET", withheader = 
 ## Displays the list of tenants to the user so he can choose one
 def selectTenantOrDomain(tenantsList, serverName=None):
     if not serverName:
-        print "You have access to the following tenant(s)and domain(s):"
+        print "You have access to the following tenant(s) and domain(s), with the following role(s):"
     else:
-        print "You have access to the following tenant(s) and domain(s)on "+serverName+":"
+        print "You have access to the following tenant(s) and domain(s), with the following role(s), on "+serverName+":"
     for idx, tenant in enumerate(tenantsList):
         if tenant.get("project", None) is None and tenant.get("domain", None) is None:
-            print "\t{", idx, "} ", tenant["description"]
+#            print "\t{", idx, "} ", tenant["description"]
+            print "\t{", idx, "} ", tenant["name"]
         else:
             if tenant.get("domain", None) is not None:
-                print "\t{", idx, "} ", tenant["domain"]["description"]
-            else:
-                print "\t{", idx, "} ", tenant["project"]["description"]+" @ "+tenant["project"]["domain"]["name"]
+#                print "\t{", idx, "} ", tenant["domain"]["description"]
+                print "\t{", idx, "} ", tenant["domain"]["name"]
+            elif tenant.get("project", None) is not None:
+		if tenant["project"].get("role", None) is not None:
+#                print "\t{", idx, "} ", tenant["project"]["description"]+" @ "+tenant["project"]["domain"]["name"]
+#	                print "\t{", idx, "} ", "T: "+ tenant["project"]["name"]+"@"+tenant["project"]["domain"]["name"]+", R: "+tenant["project"]["role"]["name"]
+	                print "\t{", idx, "} ", "T: "+ tenant["project"]["name"]+", R: "+tenant["project"]["role"]["name"]
+		else :
+	                print "\t{", idx, "} ", tenant["project"]["name"]+" @ "+tenant["project"]["domain"]["name"]
+		
     chosen = False
     choice = None
     while not chosen:
