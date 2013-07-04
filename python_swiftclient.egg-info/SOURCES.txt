@@ -28,6 +28,7 @@ swiftclient/contrib/federated/federated.py
 swiftclient/contrib/federated/federated_exceptions.py
 swiftclient/contrib/federated/federated_utils.py
 swiftclient/contrib/federated/protocols/__init__.py
+swiftclient/contrib/federated/protocols/ioidc.py
 swiftclient/contrib/federated/protocols/keystonev2.py
 swiftclient/contrib/federated/protocols/oauth.py
 swiftclient/contrib/federated/protocols/oidc.py
