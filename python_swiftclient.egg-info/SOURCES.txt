@@ -30,6 +30,7 @@ swiftclient/contrib/federated/federated_utils.py
 swiftclient/contrib/federated/protocols/__init__.py
 swiftclient/contrib/federated/protocols/keystonev2.py
 swiftclient/contrib/federated/protocols/oauth.py
+swiftclient/contrib/federated/protocols/oidc.py
 swiftclient/contrib/federated/protocols/saml.py
 swiftclient/openstack/__init__.py
 swiftclient/openstack/common/__init__.py
