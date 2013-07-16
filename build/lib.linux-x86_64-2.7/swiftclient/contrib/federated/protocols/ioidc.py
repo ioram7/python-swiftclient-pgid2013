@@ -1,4 +1,6 @@
-import BaseHTTPServer
+#import BaseHTTPServer
+import SimpleHTTPServer
+import SocketServer
 import os
 import webbrowser
 from swiftclient.contrib.federated import federated_exceptions
@@ -34,7 +36,8 @@ def getIdPResponse(idpEndpoint, idpRequest, realm=None):
 
 #    print (idpEndpoint + idpRequest)
 
-    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+#    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
         def log_request(code=0, size=0):
             return
@@ -43,44 +46,42 @@ def getIdPResponse(idpEndpoint, idpRequest, realm=None):
         def log_request(format="", msg=""):
             return
 
-#        def do_POST(self):
-#            global response
-#            self.send_response(200)
-#            self.send_header("Content-type", "text/html")
-#            self.end_headers()
-#	    print("POST")
-##	    print(self.headers)
-#	    #varLen = 2
- #           varLen = int(self.headers["Content-Length"])
-##	    print(varLen)
-  #          #response = urlparse.parse_qs(self.rfile.read(varLen))
-   #         response = self.rfile.read(varLen)
-##	    print(response)
-  #          if response is None:
-   #             self.wfile.write("An error occured.")
-    #            raise federated_exceptions.CommunicationsError()
-     #       self.wfile.write("You have successfully logged in. "
-      #                       "You can close this window now.")
-
         def do_GET(self):
 	    global responseIdp
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
+#https://localhost:8080/
+##state=lpjquz0KyrQ9
+#&access_token=ya29.AHES6ZQRoGjNDhWIB6Z6i1BW8hUCBlIepRUG4Zvd_vAD3FTt
+#&token_type=Bearer
+#&expires_in=3600
+#&id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ0M2M3NjdlMjY3NjgxMWZhOTMxZGQyYjI3NWMyNGZkYmYyYjQ1MWIifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXRfaGFzaCI6IlBlZXdNUUlwOUllaUxxUUx2ZTZ4cEEiLCJoZCI6ImNpbi51ZnBlLmJyIiwiZW1haWwiOiJpc3NAY2luLnVmcGUuYnIiLCJzdWIiOiIxMTQ2NTEwOTQzMjQ3MTYxMjU3MTUiLCJhdWQiOiI4MDA1NTAzMzIyMTktcmdpbXJuNTg2ajVjbnJkNXZ2azMxaW92Y29tMmdiYjYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhenAiOiI4MDA1NTAzMzIyMTktcmdpbXJuNTg2ajVjbnJkNXZ2azMxaW92Y29tMmdiYjYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJpYXQiOjEzNzM5Mjk5NTgsImV4cCI6MTM3MzkzMzg1OH0.PqvNJHu1weZGpnFY8TD93DNhQY2NQWbVkSqmOEQhYfYxegxieEOoNpVumSIun2jugfcU4-MkuihyGl_70eSET5u2PrZfHwGf7T5rKYJ9R1K8MEf-AcT5TL4W-TxCI94Fk0FZWsCGjgWBgcoXx1HaVRy-pE1w5ovI3otjPyk0lK8
+#&authuser=0
+#&hd=cin.ufpe.br
+#&session_state=f02671873f90c5c86d372b7bfef6a63c2223c24d..5dad
+#&prompt=none
+	    print self.path
+	    print self.rfile.read()
 
-#	    print("GET")
-#	    print(self.path)
-
-	    response = self.path.split('?')
+	    response = self.path.split('#')
 	    if len(response) == 2 : 
 		response = response[1].split('&')
 	        for resp in response :
 	            r = resp.split('=')
-		    if r[0] == "code" :
-			resp_code = r[1]
+		    if r[0] == "access_token" :
+			resp_token = r[1]
+		    elif r[0] == "id_token" :
+			resp_idtoken = r[1]
+		    elif r[0] == "expires_in" :
+			resp_exp = r[1]
+		    elif r[0] == "hd" :
+			resp_hd = r[1]
+		    elif r[0] == "token_type" :
+			resp_tt = r[1]
 		    elif r[0] == "state" :
 			resp_state = r[1]
-      	        responseIdp = dict(code=resp_code, state=resp_state)
+      	        responseIdp = dict(access_token=resp_token, id_token=resp_idtoken, expires_in=resp_exp, hd=resp_hd, token_type=resp_tt, state=resp_state)
 	        #print(responseIdp)
 
             if responseIdp is None:
@@ -89,7 +90,8 @@ def getIdPResponse(idpEndpoint, idpRequest, realm=None):
             self.wfile.write("You have successfully logged in. "
                              "You can close this window now.")
 
-    httpd = BaseHTTPServer.HTTPServer(('localhost', 8080), RequestHandler)
+#    httpd = BaseHTTPServer.HTTPServer(('localhost', 8080), RequestHandler)
+    httpd = SocketServer.TCPServer(('localhost', 8080), RequestHandler)
     try:
         httpd.socket = ssl.wrap_socket(httpd.socket, keyfile=key, certfile=cert, server_side=True)
         httpd.socket.settimeout(1)
